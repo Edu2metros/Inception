@@ -1,0 +1,13 @@
+# The MariaDB configuration file
+
+[client-server]
+port = 3306
+
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/
+
+[mysqld]
+datadir = /var/lib/mysql
+bind_address=*
+port = 3306
+user = mysql
