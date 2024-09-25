@@ -62,6 +62,13 @@ services:
     build:
       context: requirements/wordpress
       dockerfile: Dockerfile
+      args:
+        WP_ROOT_USER: ${WP_ROOT_USER}
+        WP_ROOT_PASSWORD: ${WP_ROOT_PASSWORD}
+        WP_ROOT_EMAIL: ${WP_ROOT_EMAIL}
+        WP_USER: ${WP_USER}
+        WP_PASSWORD: ${WP_PASSWORD}
+        WP_EMAIL: ${WP_EMAIL}
     env_file:
       - .env
     volumes:

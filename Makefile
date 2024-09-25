@@ -2,7 +2,7 @@ LOGIN=eddos-sa
 COMPOSE_FILE=./srcs/docker-compose.yml
 COMPOSE_CMD=docker-compose -f $(COMPOSE_FILE)
 VOLUMES= /home/$(LOGIN)/data/mariadb \
-		 /home/$(LOGIN)/data/wordpress \
+		 /home/$(LOGIN)/data/wordpress
 
 all: up
 
@@ -13,19 +13,16 @@ setup:
 		docker network create inception; \
 	fi
 	@if [ ! -d /home/$(LOGIN)/data ]; then \
-		echo "Creating directory for data volume."; \
+		echo "Creating directory for data volumes."; \
 		sudo mkdir -p $(VOLUMES); \
 	fi
-
 	@if [ ! -f ./srcs/.env ]; then \
-		echo "No .env file."; \
+		echo "No .env file found."; \
 	fi
-	
 	@if ! grep -q $(LOGIN) /etc/hosts; then \
 		echo "Adding $(LOGIN).42.fr to hosts file."; \
 		echo "127.0.0.1 $(LOGIN).42.fr" | sudo tee -a /etc/hosts > /dev/null; \
 	fi
-
 
 logs:
 	docker logs nginx
@@ -44,7 +41,7 @@ up: setup
 down:
 	$(COMPOSE_CMD) down
 
-clean: 
+clean:
 	docker image prune -af
 
 fclean: down volume-cleaner
@@ -55,8 +52,9 @@ re: fclean all
 volume-cleaner:
 	sudo rm -rf /home/$(LOGIN)/data
 	@if [ -n "$$(docker volume ls -q)" ]; then \
-		docker volume rm $(shell docker volume ls -q); \
-		else echo "No volumes to remove"; \
+		docker volume rm $$(docker volume ls -q); \
+	else \
+		echo "No volumes to remove."; \
 	fi
 
 .PHONY: all setup up down clean fclean re volume-cleaner

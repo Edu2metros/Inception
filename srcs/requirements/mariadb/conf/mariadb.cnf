@@ -8,6 +8,6 @@ port = 3306
 
 [mysqld]
 datadir = /var/lib/mysql
-bind_address=*
+bind_address = *
 port = 3306
 user = mysql

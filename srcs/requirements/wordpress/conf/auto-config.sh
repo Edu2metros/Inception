@@ -3,18 +3,16 @@
 if [ -f /var/www/wordpress/wp-config-sample.php ]; then
     rm -rf /var/www/wordpress/wp-config-sample.php
 
-    # Verifica se o WordPress já está instalado
     if ! wp core is-installed --allow-root --path=/var/www/wordpress; then
         wp core install --allow-root \
             --path=/var/www/wordpress \
             --title="Inception" \
-            --url="$DOMAIN_NAME" \
+            --url="eddos-sa.42.fr" \
             --admin_user="$WP_ROOT_USER" \
             --admin_password="$WP_ROOT_PASSWORD" \
             --admin_email="$WP_ROOT_EMAIL"
     fi
 
-    # Verifica se o usuário já existe antes de criar
     if ! wp user get "$WP_USER" --allow-root --path=/var/www/wordpress > /dev/null 2>&1; then
         wp user create --allow-root \
             --path=/var/www/wordpress \
