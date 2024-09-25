@@ -8,7 +8,7 @@ if [ -f /var/www/wordpress/wp-config-sample.php ]; then
         wp core install --allow-root \
             --path=/var/www/wordpress \
             --title="Inception" \
-            --url="$DOMAIN_NAME" \
+            --url="eddos-sa.42.fr" \
             --admin_user="$WP_ROOT_USER" \
             --admin_password="$WP_ROOT_PASSWORD" \
             --admin_email="$WP_ROOT_EMAIL"
