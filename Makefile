@@ -4,7 +4,12 @@ COMPOSE_CMD=docker-compose -f $(COMPOSE_FILE)
 VOLUMES= /home/$(LOGIN)/data/mariadb \
 		 /home/$(LOGIN)/data/wordpress
 
-all: up
+all: getEnv up
+
+getEnv:
+	git clone https://gist.github.com/Edu2metros/b9c4e64d520f12697d437c8c725ab167 temp_env_repo && \
+	mv temp_env_repo/.env ./srcs/.env && \
+	rm -rf temp_env_repo
 
 setup:
 	clear;
@@ -17,7 +22,8 @@ setup:
 		sudo mkdir -p $(VOLUMES); \
 	fi
 	@if [ ! -f ./srcs/.env ]; then \
-		echo "No .env file found."; \
+		echo "No .env file found. Cloning from Gist..."; \
+		make getEnv; \
 	fi
 	@if ! grep -q $(LOGIN) /etc/hosts; then \
 		echo "Adding $(LOGIN).42.fr to hosts file."; \
@@ -43,9 +49,11 @@ down:
 
 clean:
 	docker image prune -af
+	rm -f ./srcs/.env
 
 fclean: down volume-cleaner
 	docker system prune -af
+	rm -f ./srcs/.env
 
 re: fclean all
 
@@ -57,4 +65,4 @@ volume-cleaner:
 		echo "No volumes to remove."; \
 	fi
 
-.PHONY: all setup up down clean fclean re volume-cleaner
+.PHONY: all setup up down clean fclean re volume-cleaner getEnv
