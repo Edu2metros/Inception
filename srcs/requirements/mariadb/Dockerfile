@@ -11,5 +11,5 @@ RUN mkdir -p /var/run/mysqld && mkdir -p /run/mysqld \
     && chmod 777 /var/run/mysqld \
     && chmod 777 /run/mysqld \
     && chmod +x /scriptDB.sh
-CMD [ "mysqld_safe" ]
+
 ENTRYPOINT [ "/scriptDB.sh" ]

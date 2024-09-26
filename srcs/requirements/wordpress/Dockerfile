@@ -1,6 +1,5 @@
 FROM debian:oldstable
 
-# Atualize a lista de pacotes e instale os pacotes necessários
 RUN apt-get update && apt-get install -y \
     wget \
     lsb-release \
@@ -14,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     php8.0-fpm \
     php8.0-mysql \
     mariadb-client \
-    vim \
     && wget https://wordpress.org/latest.tar.gz -P /var/www \
     && tar -xvf /var/www/latest.tar.gz -C /var/www && rm /var/www/latest.tar.gz \
     && chown -R www-data:www-data /var/www/wordpress \
@@ -22,13 +20,10 @@ RUN apt-get update && apt-get install -y \
     && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp \
     && mkdir /run/php && ln -s $(find /usr/sbin -name 'php-fpm*') /usr/bin/php-fpm
 
-# Copie arquivos de configuração
 COPY conf/www.conf /etc/php/8.0/fpm/pool.d/www.conf
 COPY conf/wp-config.php /var/www/wordpress/wp-config.php
 COPY conf/auto-config.sh /auto-config.sh
 
-# Torne o script auto-config.sh executável
 RUN chmod +x /auto-config.sh
 
-# Defina o ponto de entrada
 ENTRYPOINT ["/auto-config.sh"]
